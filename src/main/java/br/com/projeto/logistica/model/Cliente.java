@@ -1,9 +1,11 @@
 package br.com.projeto.logistica.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
+@Getter
 @Entity
 @Table(name = "Clientes")
 public class Cliente {
@@ -19,17 +21,5 @@ public class Cliente {
     public Cliente(String nome) {
         this.nome = nome;
         this.dataCadastro = LocalDate.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public LocalDate getDataCadastro() {
-        return dataCadastro;
     }
 }

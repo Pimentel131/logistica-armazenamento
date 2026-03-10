@@ -1,23 +1,35 @@
 package br.com.projeto.logistica.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Getter
 @Entity
+@Table(name = "cargas")
 public class Carga {
     //DADOS PRINCÍPAIS
-    private String cliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     private String nomeMotorista;
     private String placaCavalo;
     private String placaCarreta;
     private String materialProduto;
-    private int quantidade;
     private String unidade;
     private int notaFiscal;
     private String operadorResponsavel;
+
+    @Setter
+    private int quantidade;
+    @Setter
     private int galpao;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String codigoQr;
 
@@ -26,12 +38,17 @@ public class Carga {
     private LocalDate dataEntrada;
 
     //SAÍDA
+    @Embedded
     private Saida saida;
 
     //RETRABALHO
+    @Embedded
     private Retrabalho retrabalho;
 
-    public Carga(String cliente, String nomeMotorista, String placaCavalo, String placaCarreta, String materialProduto,
+    public Carga() {
+    }
+
+    public Carga(Cliente cliente, String nomeMotorista, String placaCavalo, String placaCarreta, String materialProduto,
                  int quantidade, String unidade, int notaFiscal, String operadorResponsavel, int galpao) {
         this.cliente = cliente;
         this.nomeMotorista = nomeMotorista;
@@ -45,8 +62,13 @@ public class Carga {
         this.galpao = galpao;
         this.aindaArmazenado = true;
         this.dataEntrada = LocalDate.now();
-        this.id = UUID.randomUUID();
-        this.codigoQr = id.toString();
+    }
+
+    @PrePersist
+    public void gerarQrCode(){
+        if(this.codigoQr == null && this.id != null) {
+            this.codigoQr = this.id.toString();
+        }
     }
 
     public void registrarSaida(String motoristaSaida, String cavaloSaida,
@@ -54,6 +76,7 @@ public class Carga {
         if (this.saida != null) {
             throw new IllegalStateException("Carga já possui saída registrada!");
         }
+
         this.saida = new Saida(motoristaSaida, cavaloSaida, carretaSaida, operadorSaida);
         this.aindaArmazenado = false;
     }
@@ -74,77 +97,5 @@ public class Carga {
 
     public boolean temSaida() {
         return this.saida != null;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public void setGalpao(int galpao) {
-        this.galpao = galpao;
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public String getNomeMotorista() {
-        return nomeMotorista;
-    }
-
-    public String getPlacaCavalo() {
-        return placaCavalo;
-    }
-
-    public String getPlacaCarreta() {
-        return placaCarreta;
-    }
-
-    public String getMaterialProduto() {
-        return materialProduto;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public String getUnidade() {
-        return unidade;
-    }
-
-    public int getNotaFiscal() {
-        return notaFiscal;
-    }
-
-    public String getOperadorResponsavel() {
-        return operadorResponsavel;
-    }
-
-    public int getGalpao() {
-        return galpao;
-    }
-
-    public boolean isAindaArmazenado() {
-        return aindaArmazenado;
-    }
-
-    public LocalDate getDataEntrada() {
-        return dataEntrada;
-    }
-
-    public Saida getSaida() {
-        return saida;
-    }
-
-    public Retrabalho getRetrabalho() {
-        return retrabalho;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getCodigoQr() {
-        return codigoQr;
     }
 }
