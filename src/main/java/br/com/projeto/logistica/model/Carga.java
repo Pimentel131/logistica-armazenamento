@@ -31,6 +31,8 @@ public class Carga {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(unique = true)
     private String codigoQr;
 
     //CONTROLE
@@ -65,9 +67,9 @@ public class Carga {
     }
 
     @PrePersist
-    public void gerarQrCode(){
-        if(this.codigoQr == null && this.id != null) {
-            this.codigoQr = this.id.toString();
+    public void gerarQrCode() {
+        if (this.codigoQr == null) {
+            this.codigoQr = UUID.randomUUID().toString();
         }
     }
 

@@ -4,5 +4,6 @@ public enum StatusServico {
     PENDENTE,
     EM_ANDAMENTO,
     CONCLUIDO,
-    CANCELADO;
+    CANCELADO,
+    AGUARDANDO_QR;
 }
