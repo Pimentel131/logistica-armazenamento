@@ -13,5 +13,5 @@ public interface ServicoDiarioRepository extends JpaRepository<ServicoDiario, Lo
     Optional<ServicoDiario> findByNotaFiscalAndTipoOperacao(int notaFiscal, TipoOperacao tipoOperacao);
     Optional<ServicoDiario> findByNotaFiscalAndTipoOperacaoAndStatusNot(int notaFiscal, TipoOperacao tipoOperacao,
                                                                      StatusServico statusServico);
-    Optional<ServicoDiario> findByNotaFiscalAndStatusServico(int notaFiscal, StatusServico statusServico);
+    Optional<ServicoDiario> findByNotaFiscalAndStatus(int notaFiscal, StatusServico status);
 }
