@@ -22,7 +22,10 @@ public class ServicoDiario {
     @Enumerated(EnumType.STRING)
     private TipoOperacao tipoOperacao; // "ENTRADA", "SAIDA" ou "RETRABALHO"
 
-    private String cliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
     private String nomeMotorista;
     private String placaCavalo;
     private String placaCarreta; // pode ser null se for truck
@@ -33,7 +36,7 @@ public class ServicoDiario {
     public ServicoDiario() {
     }
 
-    public ServicoDiario(String cliente, String nomeMotorista, String placaCavalo,
+    public ServicoDiario(Cliente cliente, String nomeMotorista, String placaCavalo,
                          String placaCarreta, int notaFiscal, TipoOperacao tipoOperacao,
                          String operadorRegistro) {
         this.cliente = cliente;

@@ -131,7 +131,8 @@ public class ConsoleMenu implements CommandLineRunner {
     private void criarServico(Scanner scanner) {
 
         System.out.println("Nome do cliente:");
-        String cliente = scanner.nextLine();
+        String nomeCliente = scanner.nextLine();
+        Cliente cliente = clienteService.buscarCliente(nomeCliente);
 
         System.out.println("Nota fiscal:");
         int nf = scanner.nextInt();

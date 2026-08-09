@@ -21,7 +21,7 @@ public class ServicoDiarioService {
     @Autowired
     private ClienteService clienteService;
 
-    public ServicoDiario registrarServico(String cliente, String nomeMotorista, String placaCavalo, String placaCarreta,
+    public ServicoDiario registrarServico(Cliente cliente, String nomeMotorista, String placaCavalo, String placaCarreta,
                                           int notaFiscal, TipoOperacao tipoOperacao, String operadorRegistro) {
         clienteService.buscarCliente(cliente);
 
@@ -31,7 +31,7 @@ public class ServicoDiarioService {
         return servicoDiarioRepository.save(servico);
     }
 
-    public ServicoDiario registrarSaida(String cliente, String nomeMotorista, String placaCavalo,
+    public ServicoDiario registrarSaida(Cliente cliente, String nomeMotorista, String placaCavalo,
                                         String placaCarreta, int notaFiscal, String operadorRegistro) {
         clienteService.buscarCliente(cliente);
 

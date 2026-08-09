@@ -17,26 +17,33 @@ public class ClienteService {
     @Autowired
     private CargaRepository cargaRepository;
 
-    public Cliente buscarCliente(String nomeCliente) {
-
-        return clienteRepository.findByNome(nomeCliente)
+    public Cliente buscarCliente(String nome) {
+        return clienteRepository.findByNome(nome)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente não cadastrado"));
     }
 
-    public Cliente cadastrarCliente(String nomeCliente) {
-        Optional<Cliente> existente = clienteRepository.findByNome(nomeCliente);
+    public Cliente buscarCliente(Cliente cliente) {
+        if (cliente == null || cliente.getId() == null) {
+            throw new IllegalArgumentException("Cliente não cadastrado");
+        }
+        return clienteRepository.findById(cliente.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não cadastrado"));
+    }
+
+    public Cliente cadastrarCliente(String nome) {
+        Optional<Cliente> existente = clienteRepository.findByNome(nome);
         if (existente.isPresent()) {
             throw new IllegalArgumentException("Cliente já cadastrado");
         }
 
-        Cliente cliente = new Cliente(nomeCliente);
+        Cliente cliente = new Cliente(nome);
         return clienteRepository.save(cliente);
     }
 
 
-    public List<Carga> obterCargasDoCliente(String nomeCliente) {
-        Cliente cliente = clienteRepository.findByNome(nomeCliente)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não cadastrado: " + nomeCliente));
+    public List<Carga> obterCargasDoCliente(String nome) {
+        Cliente cliente = clienteRepository.findByNome(nome)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não cadastrado: " + nome));
 
         return cargaRepository.findByCliente(cliente);
     }

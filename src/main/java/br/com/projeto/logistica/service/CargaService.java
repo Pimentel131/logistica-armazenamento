@@ -7,7 +7,6 @@ import br.com.projeto.logistica.repository.ClienteRepository;
 import br.com.projeto.logistica.validator.CargaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class CargaService {
@@ -17,7 +16,7 @@ public class CargaService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public Carga validarCargaParaSaida(String cliente, int notaFiscal) {
+    public Carga validarCargaParaSaida(Cliente cliente, int notaFiscal) {
 
         Carga carga = buscarCargaPorNF(cliente, notaFiscal);
 
@@ -34,10 +33,7 @@ public class CargaService {
     }
 
 
-    public Carga buscarCargaPorNF(String nomeCliente, int notaFiscal) {
-        Cliente cliente = clienteRepository.findByNome(nomeCliente)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não cadastrado"));
-
+    public Carga buscarCargaPorNF(Cliente cliente, int notaFiscal) {
         return cargaRepository.findByClienteAndNotaFiscalAndAindaArmazenado(cliente, notaFiscal, true)
                 .orElse(null);
     }
